@@ -100,7 +100,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(parsedStudents);
-        StreamResult result = new StreamResult(System.out);
+        StreamResult result = new StreamResult(XMLStudentsDAO.class.getResource("/users/students.xml").getPath());
 
         transformer.transform(source, result);
 
@@ -128,10 +128,10 @@ public class XMLStudentsDAO implements StudentsDAO {
         Element student = parsedStudents.createElement("Student");
         rootElement.appendChild(student);
         student.setAttribute("email", stud.getEmail());
-        Element name = parsedStudents.createElement("name");
+        Element name = parsedStudents.createElement("Name");
         name.appendChild(parsedStudents.createTextNode(stud.getName()));
         student.appendChild(name);
-        Element password = parsedStudents.createElement("password");
+        Element password = parsedStudents.createElement("Password");
         password.appendChild(parsedStudents.createTextNode(stud.getPassword()));
         student.appendChild(password);
         serializeAssignmentsData(stud, student);
