@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="" ?>
+<Students>
+    <Student email="student@codecool.com">
+        <Name>Jan Kowalski</Name>
+        <Password>janeczek</Password>
+        <Assignments>
+            <Assignment name="CCMS">
+                <SubmissionLink> </SubmissionLink>
+                <Grade>0</Grade>
+            </Assignment>
+        </Assignments>
+    </Student>
+</Students>
