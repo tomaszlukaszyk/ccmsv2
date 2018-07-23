@@ -19,12 +19,17 @@ public class XMLStudentsDAO implements StudentsDAO {
     private Document parsedXML;
     private Document parsedStudents;
 
-    public XMLStudentsDAO (String studentsPath) throws Exception {
-        File fXmlFile = new File(studentsPath);
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        parsedXML = dBuilder.parse(fXmlFile);
-        parsedXML.getDocumentElement().normalize();
+    public XMLStudentsDAO (String studentsPath) {
+        try {
+            File fXmlFile = new File(studentsPath);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            parsedXML = dBuilder.parse(fXmlFile);
+            parsedXML.getDocumentElement().normalize();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public List<String> readStudentsEmails(){
