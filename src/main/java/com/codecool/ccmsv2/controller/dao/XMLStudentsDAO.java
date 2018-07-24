@@ -17,13 +17,13 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XMLStudentsDAO implements StudentsDAO {
     private String filePath = XMLStudentsDAO.class.getResource("/users/students.xml").getPath();
-    private Document parsedXML;
+
     private Document parsedStudents;
 
 
 
     public List<String> readStudentsEmails(){
-        loadXML();
+        Document parsedXML = loadXML();
         List<String> studentsEmails = new ArrayList<>();
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i = 0; i<students.getLength(); i++){
@@ -34,7 +34,7 @@ public class XMLStudentsDAO implements StudentsDAO {
     }
 
     public Student readStudentByEmail(String email){
-        loadXML();
+        Document parsedXML = loadXML();
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i = 0; i<students.getLength(); i++){
             Element student = (Element) students.item(i);
@@ -46,7 +46,7 @@ public class XMLStudentsDAO implements StudentsDAO {
     }
 
     public List<Assignment> readStudentAssignments(String email){
-        loadXML();
+        Document parsedXML = loadXML();
         List<Assignment> assignments = new ArrayList<>();
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i = 0; i<students.getLength(); i++){
@@ -57,7 +57,7 @@ public class XMLStudentsDAO implements StudentsDAO {
     }
 
     public List<Student> readStudents(){
-        loadXML();
+        Document parsedXML = loadXML();
         List<Student> studentsList = new ArrayList<>();
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i=0; i<students.getLength(); i++){
@@ -154,16 +154,19 @@ public class XMLStudentsDAO implements StudentsDAO {
         return new Student(name, email, password);
     }
 
-    private void loadXML() {
+    private Document loadXML() {
         try {
             File xmlFile = new File(filePath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            parsedXML = dBuilder.parse(xmlFile);
+            Document parsedXML = dBuilder.parse(xmlFile);
             parsedXML.getDocumentElement().normalize();
+            return parsedXML;
+
         }catch (Exception e){
             e.printStackTrace();
         }
+        return null;
 
     }
 
