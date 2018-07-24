@@ -67,11 +67,19 @@ public class XMLStudentsDAO implements StudentsDAO {
         return studentsList;
     }
 
-    public void writeStudents(List<Student> students, List<Assignment> assignmentList){
+    public void writeStudents(Student student, Assignment assignment){
         try {
             Element rootElement = prepareXMLStructure();
+            List<Student> students = readStudents();
+            if (!students.contains(student)) {
+                students.add(student);
+            }
             for (Student stud : students){
-                serializeStudentData(stud, rootElement, assignmentList);
+                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+                if (stud.getEmail().equals(student.getEmail())){
+                    studentAssignments = upDateStudentAssignments(stud, assignment);
+                }
+                serializeStudentData(stud, rootElement, studentAssignments);
             }
             exportToFile();
         }catch (ParserConfigurationException e){
@@ -79,6 +87,21 @@ public class XMLStudentsDAO implements StudentsDAO {
         }catch (TransformerException e){
             e.printStackTrace();
         }
+    }
+
+    private List<Assignment> upDateStudentAssignments(Student stud, Assignment newAssignment) {
+        List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+        boolean updatingAssignment = true;
+        for (Assignment assignment : studentAssignments){
+            if (assignment.getName().equals(newAssignment.getName())){
+                assignment = newAssignment;
+                updatingAssignment = false;
+            }
+        }
+        if (!updatingAssignment){
+            studentAssignments.add(newAssignment);
+        }
+        return studentAssignments;
     }
 
     private Element prepareXMLStructure() throws ParserConfigurationException{
