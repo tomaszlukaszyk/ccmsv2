@@ -8,10 +8,13 @@ import com.codecool.ccmsv2.model.Student;
 import java.util.List;
 
 public class StudentController extends UserController {
+    private XMLStudentsDAO xmlStudentsDAO;
 
     public StudentController(Student student){
         super(student);
+        xmlStudentsDAO = new XMLStudentsDAO();
     }
+
 
     public void startUserSession(){
         getView().printMenu("Exit",
@@ -40,16 +43,15 @@ public class StudentController extends UserController {
     }
 
     private void showAssignmentDescription(){
-        String name = getView().getInputString("Name of assignment?");
+        List<Assignment> assignmentList = xmlStudentsDAO.readStudentAssignments(getUser().getEmail());
+        String name = findAssignmentName(assignmentList);
         System.out.println(name +"\n" + new CSVAssignmentsDAO().getAssignmentDescriptionByName(name));
     }
 
     private void submitAssignment(){
-        String name = getView().getInputString("Name of assignment?");
-        XMLStudentsDAO xmlStudentsDAO = new XMLStudentsDAO();
         List<Assignment> assignmentList = xmlStudentsDAO.readStudentAssignments(getUser().getEmail());
-        Assignment assignmentToSubmit = findAssignment(name, assignmentList);
-        String submissionLink = getView().getInputString("Linkt to assignment?");
+        Assignment assignmentToSubmit = findAssignment(assignmentList);
+        String submissionLink = getView().getInputString("Link to assignment?");
         assignmentToSubmit.setSubmissionLink(submissionLink);
         xmlStudentsDAO.writeStudents(xmlStudentsDAO.readStudents(), assignmentList);
     }
@@ -68,12 +70,21 @@ public class StudentController extends UserController {
         }
     }
 
-    private Assignment findAssignment(String name, List<Assignment> assignments){
+    private Assignment findAssignment(List<Assignment> assignments){
+        String name = findAssignmentName(assignments);
         for (Assignment assignment : assignments){
             if (assignment.getName().equals(name)){
                 return assignment;
             }
         }
         return null;
+    }
+
+    private String findAssignmentName(List<Assignment> assignmentsList){
+        for (int i =0; i<assignmentsList.size(); i++){
+            getView().print(i + assignmentsList.get(i).toString());
+        }
+        int option = getView().getInputInt(0, assignmentsList.size());
+        return assignmentsList.get(option+1).getName();
     }
 }
