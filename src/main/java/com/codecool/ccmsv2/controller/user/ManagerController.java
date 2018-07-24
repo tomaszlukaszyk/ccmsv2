@@ -1,11 +1,20 @@
 package com.codecool.ccmsv2.controller.user;
 
+import com.codecool.ccmsv2.controller.dao.StudentsDAO;
+import com.codecool.ccmsv2.controller.dao.XMLStudentsDAO;
 import com.codecool.ccmsv2.model.Manager;
+import com.codecool.ccmsv2.model.Student;
+import com.codecool.ccmsv2.model.User;
+
+import java.util.List;
 
 public class ManagerController extends UserController {
 
+    private StudentsDAO studentsDAO;
+
     public ManagerController(Manager manager) {
         super(manager);
+        studentsDAO = new XMLStudentsDAO();
     }
 
     @Override
@@ -35,7 +44,7 @@ public class ManagerController extends UserController {
                     isRunning = false;
                     break;
                 case 1:
-                    // TODO: show students
+                    showStudents();
                     break;
                 case 2:
                     // TODO: show mentors
@@ -65,4 +74,17 @@ public class ManagerController extends UserController {
         }
 
     }
+
+    private void showUsers(List<? extends User> users) {
+
+        for (User user: users) {
+            getView().print("\n" + user);
+        }
+    }
+
+    private void showStudents() {
+        List<Student> students = studentsDAO.readStudents();
+        showUsers(students);
+    }
+
 }
