@@ -4,7 +4,9 @@ import com.codecool.ccmsv2.model.Employee;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -63,6 +65,15 @@ public class CsvEmployeesDAO implements EmployeesDAO {
     @Override
     public void writeEmployees(List<Employee> employees) {
 
+        try (Formatter writer = new Formatter(filePath)) {
+
+            for (Employee employee: employees) {
+                writer.format("%s|%s|%s\n", employee.getEmail(), employee.getName(), employee.getPassword());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Scanner getScanner() {
