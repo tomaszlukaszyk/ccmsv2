@@ -140,7 +140,7 @@ public class XMLStudentsDAO implements StudentsDAO {
                 String assName = assignment.getAttribute("name");
                 String submissionLink = assignment.getElementsByTagName("SubmissionLink").item(0).getTextContent();
                 String grade = assignment.getElementsByTagName("Grade").item(0).getTextContent();
-                String description = (new CSVAssignmentsDAO()).getAssignmentDescription(assName);
+                String description = (new CSVAssignmentsDAO()).getAssignmentDescriptionByName(assName);
                 assignmentsList.add(new Assignment(assName, description, submissionLink, grade));
             }
         }
