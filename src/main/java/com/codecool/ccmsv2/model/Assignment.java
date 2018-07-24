@@ -21,12 +21,6 @@ public class Assignment {
         this.grade = "0";
     }
 
-    public Assignment(String name, String grade, String submissionLink) {
-        this.name = name;
-        this.description = "";
-        this.submissionLink = submissionLink;
-        this.grade = grade;
-    }
 
     public String getName() {
         return name;
