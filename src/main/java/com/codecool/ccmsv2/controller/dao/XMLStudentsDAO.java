@@ -73,11 +73,11 @@ public class XMLStudentsDAO implements StudentsDAO {
         return studentsList;
     }
 
-    public void writeStudents(List<Student> students){
+    public void writeStudents(List<Student> students, List<Assignment> assignmentList){
         try {
             Element rootElement = prepareXMLStructure();
             for (Student stud : students){
-                serializeStudentData(stud, rootElement);
+                serializeStudentData(stud, rootElement, assignmentList);
             }
             exportToFile();
         }catch (ParserConfigurationException e){
@@ -107,8 +107,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         System.out.println("File saved!");
     }
 
-    private void serializeAssignmentsData(Student stud, Element student){
-        List<Assignment> assignments = readStudentAssignments(stud.getEmail());
+    private void serializeAssignmentsData(Student stud, Element student, List<Assignment> assignments){
         Element assignmentRoot = parsedStudents.createElement("Assignments");
         student.appendChild(assignmentRoot);
         for(Assignment assignment : assignments){
@@ -124,7 +123,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         }
     }
 
-    private void serializeStudentData(Student stud, Element rootElement){
+    private void serializeStudentData(Student stud, Element rootElement, List<Assignment> assignmentList){
         Element student = parsedStudents.createElement("Student");
         rootElement.appendChild(student);
         student.setAttribute("email", stud.getEmail());
@@ -134,7 +133,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         Element password = parsedStudents.createElement("Password");
         password.appendChild(parsedStudents.createTextNode(stud.getPassword()));
         student.appendChild(password);
-        serializeAssignmentsData(stud, student);
+        serializeAssignmentsData(stud, student, assignmentList);
     }
 
 
