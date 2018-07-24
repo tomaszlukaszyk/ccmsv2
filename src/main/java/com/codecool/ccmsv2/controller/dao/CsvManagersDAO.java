@@ -2,7 +2,11 @@ package com.codecool.ccmsv2.controller.dao;
 
 import com.codecool.ccmsv2.model.Manager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class CsvManagersDAO implements ManagersDAO {
 
@@ -13,11 +17,33 @@ public class CsvManagersDAO implements ManagersDAO {
 
     @Override
     public List<String> readManagersEmails() {
-        return null;
+
+        List<String> emails = new ArrayList<>();
+        Scanner fileReader = getScanner();
+
+        while (fileReader.hasNext()) {
+            String[] line = fileReader.nextLine().split("\\|");
+            emails.add(line[EMAIL_COL]);
+        }
+
+        return emails;
     }
 
     @Override
     public Manager readManagerByEmail(String email) {
         return null;
+    }
+
+    private Scanner getScanner() {
+
+        Scanner fileReader = null;
+
+        try {
+            fileReader = new Scanner(new File(filePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return fileReader;
     }
 }
