@@ -101,7 +101,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         System.out.println("File saved!");
     }
 
-    private void serializeAssignmentsData(Student stud, Element student, List<Assignment> assignments){
+    private void serializeAssignmentsData(Element student, List<Assignment> assignments){
         Element assignmentRoot = parsedStudents.createElement("Assignments");
         student.appendChild(assignmentRoot);
         for(Assignment assignment : assignments){
@@ -127,7 +127,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         Element password = parsedStudents.createElement("Password");
         password.appendChild(parsedStudents.createTextNode(stud.getPassword()));
         student.appendChild(password);
-        serializeAssignmentsData(stud, student, assignmentList);
+        serializeAssignmentsData(student, assignmentList);
     }
 
 
