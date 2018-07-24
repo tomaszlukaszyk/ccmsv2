@@ -31,6 +31,16 @@ public class CsvManagersDAO implements ManagersDAO {
 
     @Override
     public Manager readManagerByEmail(String email) {
+
+        Scanner fileReader = getScanner();
+
+        while (fileReader.hasNext()) {
+            String[] line = fileReader.nextLine().split("\\|");
+
+            if (line[EMAIL_COL].equals(email))
+                return new Manager(line[NAME_COL], email, line[PASSWORD_COL]);
+        }
+
         return null;
     }
 
