@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface AssignmentDAO {
     List<Assignment> readAssignments();
-    void writeAssignments();
+    void writeAssignments(List<Assignment> assignments);
     String getAssignmentDescriptionByName(String name);
 }
