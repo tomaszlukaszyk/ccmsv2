@@ -5,13 +5,38 @@ import com.codecool.ccmsv2.controller.dao.XMLStudentsDAO;
 import com.codecool.ccmsv2.model.Assignment;
 import com.codecool.ccmsv2.model.Student;
 
-import javax.xml.bind.annotation.XmlAccessOrder;
 import java.util.List;
 
 public class StudentController extends UserController {
 
     public StudentController(Student student){
         super(student);
+    }
+
+    public void startUserSession(){
+        getView().printMenu("Exit",
+                "Assignment List",
+                "Grades",
+                "Get Assignment Details",
+                "Submit Assignment");
+        int option = getView().getInputInt(0,4);
+        while (!(option==0 )){
+            switch (option){
+                case 1:
+                    showAssignments();
+                    break;
+                case 2:
+                    showGrades();
+                    break;
+                case 3:
+                    showAssignmentDescription();
+                    break;
+                case 4:
+                    submitAssignment();
+                    break;
+            }
+            option = getView().getInputInt(0,4);
+        }
     }
 
     private void showAssignmentDescription(){

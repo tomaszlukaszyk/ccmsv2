@@ -3,6 +3,7 @@ package com.codecool.ccmsv2.controller.user;
 import com.codecool.ccmsv2.controller.dao.XMLStudentsDAO;
 import com.codecool.ccmsv2.model.Student;
 import com.codecool.ccmsv2.model.User;
+import com.codecool.ccmsv2.view.View;
 
 import java.util.List;
 
