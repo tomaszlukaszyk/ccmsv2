@@ -46,7 +46,18 @@ public class CsvMentorsDAO implements MentorsDAO {
 
     @Override
     public List<Mentor> readMentors() {
-        return null;
+
+        List<Mentor> mentors = new ArrayList<>();
+        Scanner fileReader = getScanner();
+
+        while (fileReader.hasNext()) {
+
+            String[] line = fileReader.nextLine().split("\\|");
+            mentors.add(new Mentor(line[NAME_COL], line[EMAIL_COL], line[PASSWORD_COL]));
+
+        }
+
+        return mentors;
     }
 
     @Override
