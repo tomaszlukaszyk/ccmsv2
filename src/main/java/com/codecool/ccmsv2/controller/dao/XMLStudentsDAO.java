@@ -16,23 +16,14 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 public class XMLStudentsDAO implements StudentsDAO {
+    String filePath = XMLStudentsDAO.class.getResource("/users/students.xml").getPath();
     private Document parsedXML;
     private Document parsedStudents;
 
-    public XMLStudentsDAO (String studentsPath) {
-        try {
-            File fXmlFile = new File(studentsPath);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            parsedXML = dBuilder.parse(fXmlFile);
-            parsedXML.getDocumentElement().normalize();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
-    }
 
     public List<String> readStudentsEmails(){
+        loadXML();
         List<String> studentsEmails = new ArrayList<>();
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i = 0; i<students.getLength(); i++){
@@ -43,6 +34,7 @@ public class XMLStudentsDAO implements StudentsDAO {
     }
 
     public Student readStudentByEmail(String email){
+        loadXML();
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i = 0; i<students.getLength(); i++){
             Element student = (Element) students.item(i);
@@ -54,6 +46,7 @@ public class XMLStudentsDAO implements StudentsDAO {
     }
 
     public List<Assignment> readStudentAssignments(String email){
+        loadXML();
         List<Assignment> assignments = new ArrayList<>();
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i = 0; i<students.getLength(); i++){
@@ -64,6 +57,7 @@ public class XMLStudentsDAO implements StudentsDAO {
     }
 
     public List<Student> readStudents(){
+        loadXML();
         List<Student> studentsList = new ArrayList<>();
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i=0; i<students.getLength(); i++){
@@ -160,6 +154,19 @@ public class XMLStudentsDAO implements StudentsDAO {
         String name = student.getElementsByTagName("Name").item(0).getTextContent();
         String password = student.getElementsByTagName("Password").item(0).getTextContent();
         return new Student(name, email, password);
+    }
+
+    private void loadXML() {
+        try {
+            File xmlFile = new File(filePath);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            parsedXML = dBuilder.parse(xmlFile);
+            parsedXML.getDocumentElement().normalize();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 }
