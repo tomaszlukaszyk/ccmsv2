@@ -16,7 +16,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 public class XMLStudentsDAO implements StudentsDAO {
-    String filePath = XMLStudentsDAO.class.getResource("/users/students.xml").getPath();
+    private String filePath = XMLStudentsDAO.class.getResource("/users/students.xml").getPath();
     private Document parsedXML;
     private Document parsedStudents;
 
@@ -140,7 +140,7 @@ public class XMLStudentsDAO implements StudentsDAO {
                 String assName = assignment.getAttribute("name");
                 String submissionLink = assignment.getElementsByTagName("SubmissionLink").item(0).getTextContent();
                 String grade = assignment.getElementsByTagName("Grade").item(0).getTextContent();
-                String description = (new CSVAssignmentsDao(XMLStudentsDAO.class.getResource("/users/assignments.xml")
+                String description = (new CSVAssignmentsDAO(XMLStudentsDAO.class.getResource("/users/assignments.xml")
                         .getPath()))
                         .getAssignmentDescription(assName);
                 assignmentsList.add(new Assignment(assName, description, submissionLink, grade));
