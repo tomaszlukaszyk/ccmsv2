@@ -67,11 +67,19 @@ public class XMLStudentsDAO implements StudentsDAO {
         return studentsList;
     }
 
-    public void writeStudents(List<Student> students, List<Assignment> assignmentList){
+    public void writeStudents(Student student, Assignment assignment){
         try {
             Element rootElement = prepareXMLStructure();
+            List<Student> students = readStudents();
+            if (!students.contains(student)) {
+                students.add(student);
+            }
             for (Student stud : students){
-                serializeStudentData(stud, rootElement, assignmentList);
+                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+                if (stud.getEmail().equals(student.getEmail())){
+                    studentAssignments = upDateStudentAssignments(stud, assignment);
+                }
+                serializeStudentData(stud, rootElement, studentAssignments);
             }
             exportToFile();
         }catch (ParserConfigurationException e){
@@ -79,6 +87,90 @@ public class XMLStudentsDAO implements StudentsDAO {
         }catch (TransformerException e){
             e.printStackTrace();
         }
+    }
+
+    public void writeStudents(List<Student> students){
+        try {
+            Element rootElement = prepareXMLStructure();
+            for (Student stud : students){
+                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+                serializeStudentData(stud, rootElement, studentAssignments);
+            }
+            exportToFile();
+        }catch (ParserConfigurationException e){
+            e.printStackTrace();
+        }catch (TransformerException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void writeStudents(Student student){
+        try {
+            Element rootElement = prepareXMLStructure();
+            List<Student> students = readStudents();
+            for (Student stud : students){
+                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+                if (stud.getEmail().equals(student.getEmail())){
+                    stud = student;
+                }
+                serializeStudentData(stud, rootElement, studentAssignments);
+            }
+            exportToFile();
+        }catch (ParserConfigurationException e){
+            e.printStackTrace();
+        }catch (TransformerException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void writeStudents(Student student, List<Assignment> assignmentList){
+        try {
+            Element rootElement = prepareXMLStructure();
+            List<Student> students = readStudents();
+            for (Student stud : students){
+                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+                if (stud.getEmail().equals(student.getEmail())){
+                    for (Assignment assignment : assignmentList) {
+                        studentAssignments = upDateStudentAssignments(stud, assignment);
+                    }
+                }
+                serializeStudentData(stud, rootElement, studentAssignments);
+            }
+            exportToFile();
+        }catch (ParserConfigurationException e){
+            e.printStackTrace();
+        }catch (TransformerException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void writeStudents(List<Student> students, List<Assignment> assignments){
+        try {
+            Element rootElement = prepareXMLStructure();
+            for (Student stud : students){
+                serializeStudentData(stud, rootElement, assignments);
+            }
+            exportToFile();
+        }catch (ParserConfigurationException e){
+            e.printStackTrace();
+        }catch (TransformerException e){
+            e.printStackTrace();
+        }
+    }
+
+    private List<Assignment> upDateStudentAssignments(Student stud, Assignment newAssignment) {
+        List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+        boolean updatingAssignment = true;
+        for (Assignment assignment : studentAssignments){
+            if (assignment.getName().equals(newAssignment.getName())){
+                studentAssignments.set(studentAssignments.indexOf(assignment), newAssignment);
+                updatingAssignment = false;
+            }
+        }
+        if (!updatingAssignment){
+            studentAssignments.add(newAssignment);
+        }
+        return studentAssignments;
     }
 
     private Element prepareXMLStructure() throws ParserConfigurationException{
