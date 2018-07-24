@@ -38,6 +38,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("%s 5s", this.name, this.email);
+        return String.format("%s %s", this.name, this.email);
     }
 }

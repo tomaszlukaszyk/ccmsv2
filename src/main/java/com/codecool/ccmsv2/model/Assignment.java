@@ -21,6 +21,7 @@ public class Assignment {
         this.grade = "0";
     }
 
+
     public String getName() {
         return name;
     }
