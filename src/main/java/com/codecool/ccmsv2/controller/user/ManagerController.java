@@ -1,8 +1,11 @@
 package com.codecool.ccmsv2.controller.user;
 
+import com.codecool.ccmsv2.controller.dao.CsvMentorsDAO;
+import com.codecool.ccmsv2.controller.dao.MentorsDAO;
 import com.codecool.ccmsv2.controller.dao.StudentsDAO;
 import com.codecool.ccmsv2.controller.dao.XMLStudentsDAO;
 import com.codecool.ccmsv2.model.Manager;
+import com.codecool.ccmsv2.model.Mentor;
 import com.codecool.ccmsv2.model.Student;
 import com.codecool.ccmsv2.model.User;
 
@@ -11,10 +14,12 @@ import java.util.List;
 public class ManagerController extends UserController {
 
     private StudentsDAO studentsDAO;
+    private MentorsDAO mentorsDAO;
 
     public ManagerController(Manager manager) {
         super(manager);
         studentsDAO = new XMLStudentsDAO();
+        mentorsDAO = new CsvMentorsDAO();
     }
 
     @Override
@@ -47,7 +52,7 @@ public class ManagerController extends UserController {
                     showStudents();
                     break;
                 case 2:
-                    // TODO: show mentors
+                    showMentors();
                     break;
                 case 3:
                     // TODO: add mentor
@@ -87,4 +92,8 @@ public class ManagerController extends UserController {
         showUsers(students);
     }
 
+    private void showMentors() {
+        List<Mentor> mentors = mentorsDAO.readMentors();
+        showUsers(mentors);
+    }
 }
