@@ -35,6 +35,8 @@ public class MentorController extends UserController {
         List<Assignment> assignments = csvAssignmentsDAO.readAssignments();
         assignments.add(new Assignment
                 (getView().getInputString("Name?"), getView().getInputString("Description?")));
+        List<Student> students =xmlStudentsDAO.readStudents();
+        xmlStudentsDAO.writeStudents(students, assignments);
         csvAssignmentsDAO.writeAssignments(assignments);
     }
 
@@ -93,7 +95,7 @@ public class MentorController extends UserController {
         String email = null;
         do{
             email = getView().getInputString("Email?");
-            if (existingEmails.contains(email){
+            if (existingEmails.contains(email)){
                 isEmailUnique =false;
                 getView().print("Such email exists in DBase");
             }
@@ -109,7 +111,40 @@ public class MentorController extends UserController {
     }
 
     public void startUserSession(){
-
+        getView().printMenu("Exit",
+                "Check Attendance",
+                "Show assignments",
+                "Grade assignments",
+                "Add assignment",
+                "Add Student",
+                "Remove Student",
+                "Edit Student");
+        int option = getView().getInputInt(0,4);
+        while (!(option==0 )){
+            switch (option){
+                case 1:
+                    checkAttendance();
+                    break;
+                case 2:
+                    showAssignments();
+                    break;
+                case 3:
+                    gradeAssignment();
+                    break;
+                case 4:
+                    addAssignment();
+                    break;
+                case  5:
+                    addStudent();
+                    break;
+                case 6:
+                    removeStudent();
+                    break;
+                case 7:
+                    editStudent();
+            }
+            option = getView().getInputInt(0,4);
+        }
     }
 
     private Student chooseStudent(List<Student> students){
