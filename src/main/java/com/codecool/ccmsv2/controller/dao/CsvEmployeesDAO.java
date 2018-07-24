@@ -46,7 +46,18 @@ public class CsvEmployeesDAO implements EmployeesDAO {
 
     @Override
     public List<Employee> readEmployees() {
-        return null;
+
+        List<Employee> employees = new ArrayList<>();
+        Scanner fileReader = getScanner();
+
+        while (fileReader.hasNext()) {
+
+            String[] line = fileReader.nextLine().split("\\|");
+            employees.add(new Employee(line[NAME_COL], line[EMAIL_COL], line[PASSWORD_COL]));
+
+        }
+
+        return employees;
     }
 
     @Override
