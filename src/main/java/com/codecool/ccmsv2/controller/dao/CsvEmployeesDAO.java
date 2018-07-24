@@ -31,6 +31,16 @@ public class CsvEmployeesDAO implements EmployeesDAO {
 
     @Override
     public Employee readEmployeeByEmail(String email) {
+
+        Scanner fileReader = getScanner();
+
+        while (fileReader.hasNext()) {
+            String[] line = fileReader.nextLine().split("\\|");
+
+            if (line[EMAIL_COL].equals(email))
+                return new Employee(line[NAME_COL], email, line[PASSWORD_COL]);
+        }
+
         return null;
     }
 
