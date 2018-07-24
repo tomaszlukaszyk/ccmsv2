@@ -50,7 +50,6 @@ public class MentorController extends UserController {
     }
 
     private void checkAttendance(){
-        Map<String,List<String>> attendance = csvAttendanceDAO.readAttendance();
         List<Student> students = xmlStudentsDAO.readStudents();
         List<String> presentStudents = new ArrayList<>();
         for (Student student : students){
@@ -92,7 +91,7 @@ public class MentorController extends UserController {
 
     private String setEmail(List<String> existingEmails){
         boolean isEmailUnique = true;
-        String email = null;
+        String email;
         do{
             email = getView().getInputString("Email?");
             if (existingEmails.contains(email)){

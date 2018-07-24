@@ -144,6 +144,20 @@ public class XMLStudentsDAO implements StudentsDAO {
         }
     }
 
+    public void writeStudents(List<Student> students, List<Assignment> assignments){
+        try {
+            Element rootElement = prepareXMLStructure();
+            for (Student stud : students){
+                serializeStudentData(stud, rootElement, assignments);
+            }
+            exportToFile();
+        }catch (ParserConfigurationException e){
+            e.printStackTrace();
+        }catch (TransformerException e){
+            e.printStackTrace();
+        }
+    }
+
     private List<Assignment> upDateStudentAssignments(Student stud, Assignment newAssignment) {
         List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
         boolean updatingAssignment = true;
