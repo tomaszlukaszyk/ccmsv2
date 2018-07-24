@@ -8,9 +8,11 @@ import java.util.List;
 
 public abstract class UserController {
     private User user;
+    private View view;
 
     public UserController(User user) {
         this.user = user;
+        this.view = new View();
     }
 
     public abstract void startUserSession();
@@ -24,5 +26,13 @@ public abstract class UserController {
 
     private void welcomeUser(){
         System.out.println("Welcome" + user.getName());
+    }
+
+    public View getView(){
+        return view;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
