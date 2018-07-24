@@ -2,6 +2,8 @@ package com.codecool.ccmsv2.controller.dao;
 
 import com.codecool.ccmsv2.model.Mentor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,11 +15,18 @@ public class CsvMentorsDAO implements MentorsDAO {
     final int NAME_COL = 1;
     final int PASSWORD_COL = 2;
 
-    Scanner fileReader;
-
     @Override
     public List<String> readMentorsEmails() {
-        return null;
+
+        List<String> emails = new ArrayList<>();
+        Scanner fileReader = getScanner();
+
+        while (fileReader.hasNext()) {
+            String[] line = fileReader.nextLine().split("\\|");
+            emails.add(line[EMAIL_COL]);
+        }
+
+        return emails;
     }
 
     @Override
@@ -33,5 +42,18 @@ public class CsvMentorsDAO implements MentorsDAO {
     @Override
     public void writeMentors(List<Mentor> mentors) {
 
+    }
+
+    private Scanner getScanner() {
+
+        Scanner fileReader = null;
+
+        try {
+            fileReader = new Scanner(new File(filePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return fileReader;
     }
 }
