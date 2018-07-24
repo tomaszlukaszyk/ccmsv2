@@ -4,7 +4,9 @@ import com.codecool.ccmsv2.model.Mentor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -62,6 +64,16 @@ public class CsvMentorsDAO implements MentorsDAO {
 
     @Override
     public void writeMentors(List<Mentor> mentors) {
+
+        try (Formatter writer = new Formatter(filePath)) {
+
+            for (Mentor mentor: mentors) {
+                writer.format("%s|%s|%s\n", mentor.getEmail(), mentor.getName(), mentor.getPassword());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
