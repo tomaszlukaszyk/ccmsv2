@@ -9,9 +9,11 @@ import java.util.List;
 
 public class StudentController extends UserController {
     private XMLStudentsDAO xmlStudentsDAO;
+    private Student student;
 
     public StudentController(Student student){
         super(student);
+        this.student = student;
         xmlStudentsDAO = new XMLStudentsDAO();
     }
 
@@ -53,7 +55,7 @@ public class StudentController extends UserController {
         Assignment assignmentToSubmit = findAssignment(assignmentList);
         String submissionLink = getView().getInputString("Link to assignment?");
         assignmentToSubmit.setSubmissionLink(submissionLink);
-        xmlStudentsDAO.writeStudents(xmlStudentsDAO.readStudents(), assignmentList);
+        xmlStudentsDAO.writeStudents(student, assignmentToSubmit);
     }
 
     private void showGrades(){
@@ -82,7 +84,7 @@ public class StudentController extends UserController {
 
     private String findAssignmentName(List<Assignment> assignmentsList){
         for (int i =0; i<assignmentsList.size(); i++){
-            getView().print(i + assignmentsList.get(i).toString());
+            getView().print(i+1+ ". " + assignmentsList.get(i).toString());
         }
         int option = getView().getInputInt(0, assignmentsList.size());
         return assignmentsList.get(option+1).getName();
