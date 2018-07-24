@@ -21,12 +21,17 @@ public class Assignment {
         this.grade = "0";
     }
 
+
     public String getName() {
         return name;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDescription(){
+        return description;
     }
 
     public String getSubmissionLink() {
