@@ -89,6 +89,61 @@ public class XMLStudentsDAO implements StudentsDAO {
         }
     }
 
+    public void writeStudents(List<Student> students){
+        try {
+            Element rootElement = prepareXMLStructure();
+            for (Student stud : students){
+                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+                serializeStudentData(stud, rootElement, studentAssignments);
+            }
+            exportToFile();
+        }catch (ParserConfigurationException e){
+            e.printStackTrace();
+        }catch (TransformerException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void writeStudents(Student student){
+        try {
+            Element rootElement = prepareXMLStructure();
+            List<Student> students = readStudents();
+            for (Student stud : students){
+                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+                if (stud.getEmail().equals(student.getEmail())){
+                    stud = student;
+                }
+                serializeStudentData(stud, rootElement, studentAssignments);
+            }
+            exportToFile();
+        }catch (ParserConfigurationException e){
+            e.printStackTrace();
+        }catch (TransformerException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void writeStudents(Student student, List<Assignment> assignmentList){
+        try {
+            Element rootElement = prepareXMLStructure();
+            List<Student> students = readStudents();
+            for (Student stud : students){
+                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
+                if (stud.getEmail().equals(student.getEmail())){
+                    for (Assignment assignment : assignmentList) {
+                        studentAssignments = upDateStudentAssignments(stud, assignment);
+                    }
+                }
+                serializeStudentData(stud, rootElement, studentAssignments);
+            }
+            exportToFile();
+        }catch (ParserConfigurationException e){
+            e.printStackTrace();
+        }catch (TransformerException e){
+            e.printStackTrace();
+        }
+    }
+
     private List<Assignment> upDateStudentAssignments(Student stud, Assignment newAssignment) {
         List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
         boolean updatingAssignment = true;
