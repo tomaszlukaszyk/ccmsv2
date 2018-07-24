@@ -51,4 +51,3 @@ import java.util.Scanner;
             System.out.printf("    (0) %s\n", items[0]);
         }
     }
-}
