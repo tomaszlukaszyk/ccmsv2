@@ -163,7 +163,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         boolean updatingAssignment = true;
         for (Assignment assignment : studentAssignments){
             if (assignment.getName().equals(newAssignment.getName())){
-                assignment = newAssignment;
+                studentAssignments.set(studentAssignments.indexOf(assignment), newAssignment);
                 updatingAssignment = false;
             }
         }
