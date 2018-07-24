@@ -30,6 +30,10 @@ public class Assignment {
         this.description = description;
     }
 
+    public String getDescription(){
+        return description;
+    }
+
     public String getSubmissionLink() {
         return submissionLink;
     }
