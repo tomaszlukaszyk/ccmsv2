@@ -156,4 +156,11 @@ public class ManagerController extends UserController {
 
         return getView().getInputInt(1, data.length);
     }
+
+    private void removeMentor() {
+        List<Mentor> mentors = mentorsDAO.readMentors();
+        getView().print("Choose a mentor you want to remove:");
+        mentors.remove(chooseUser(mentors));
+        mentorsDAO.writeMentors(mentors);
+    }
 }
