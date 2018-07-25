@@ -66,10 +66,10 @@ public class ManagerController extends UserController {
                     addEmployee();
                     break;
                 case 8:
-                    // TODO: edit employee
+                    editEmployee();
                     break;
                 case 9:
-                    // TODO: remove employee
+                    removeEmployee();
                     break;
             }
         }
@@ -157,7 +157,7 @@ public class ManagerController extends UserController {
 
     private void removeMentor() {
         List<Mentor> mentors = mentorsDAO.readMentors();
-        getView().print("Choose a mentor you want to remove:");
+        getView().print("\nChoose a mentor you want to remove:");
         mentors.remove(chooseUser(mentors));
         mentorsDAO.writeMentors(mentors);
     }
@@ -200,6 +200,13 @@ public class ManagerController extends UserController {
                 break;
         }
 
+        employeesDAO.writeEmployees(employees);
+    }
+
+    private void removeEmployee() {
+        List<Employee> employees = employeesDAO.readEmployees();
+        getView().print("\nChoose a employee you want to remove:");
+        employees.remove(chooseUser(employees));
         employeesDAO.writeEmployees(employees);
     }
 }
