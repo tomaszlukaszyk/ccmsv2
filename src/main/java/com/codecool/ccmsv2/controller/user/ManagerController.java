@@ -139,6 +139,8 @@ public class ManagerController extends UserController {
                 break;
         }
 
+        mentorsDAO.writeMentors(mentors);
+
     }
 
     private int chooseUser(List<? extends User> users) {
