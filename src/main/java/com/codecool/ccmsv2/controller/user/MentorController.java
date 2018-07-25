@@ -41,13 +41,15 @@ public class MentorController extends UserController {
         csvAssignmentsDAO.writeAssignments(assignments);
     }
 
-    private void gradeAssignment(){
+    private void gradeAssignment() {
         List<Student> students= xmlStudentsDAO.readStudents();
         Student student = chooseStudent(students);
         List<Assignment> studentsAssig = xmlStudentsDAO.readStudentAssignments(student.getEmail());
         Assignment assignment = chooseAssignment(studentsAssig);
-        assignment.setGrade(getView().getInputString("Grade?"));
-        xmlStudentsDAO.writeStudents(student, assignment);
+        if (!(assignment == null)) {
+            assignment.setGrade(getView().getInputString("Grade?"));
+            xmlStudentsDAO.writeStudents(student, assignment);
+        }
     }
 
     private void checkAttendance(){
@@ -55,7 +57,7 @@ public class MentorController extends UserController {
         List<String> presentStudents = new ArrayList<>();
         for (Student student : students){
             if (present(student)){
-                presentStudents.add(student.getEmail());
+                presentStudents.add(student.getEmail() + student.getName());
             }
         }
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -69,7 +71,7 @@ public class MentorController extends UserController {
         String email = setEmail();
         String name = getView().getInputString("Name?");
         String password = getView().getInputString("Password");
-        Student student = new Student(email,name,password);
+        Student student = new Student(name, email, password);
         xmlStudentsDAO.writeStudents(student, assignments);
     }
 
@@ -89,14 +91,6 @@ public class MentorController extends UserController {
         xmlStudentsDAO.writeStudents(student);
     }
 
-    private String setEmail(){
-        String email;
-        do{
-            email = getView().getInputString("Email?");
-            getView().print("Such email exists in DBase");
-        }while (!isEmailUnique(email));
-        return email;
-    }
 
     private void showAttendance(){
         Map<String, List<String>> attendance = new CSVAttendanceDAO().readAttendance();
@@ -109,7 +103,8 @@ public class MentorController extends UserController {
 
 
     public void startUserSession(){
-        welcomeUser();
+        int option = 1;
+
         while (!(option==0 )){
 
             getView().printMenu("Exit",
@@ -165,17 +160,36 @@ public class MentorController extends UserController {
     }
 
     private Assignment chooseAssignment(List<Assignment> assignmentsList){
+        int counter = 0;
         for (int i =0; i<assignmentsList.size(); i++){
-            getView().print(i+1+ ". " + assignmentsList.get(i).toString()+ "\n");
+            if (!assignmentsList.get(i).getSubmissionLink().isEmpty()) {
+                getView().print(i + 1 + ". " + assignmentsList.get(i).toString() + "\n");
+                counter ++;
+            }
         }
-        int option = getView().getInputInt(1, assignmentsList.size());
-        return assignmentsList.get(option-1);
+        if (counter > 0) {
+            int option = getView().getInputInt(1, counter);
+            return assignmentsList.get(option - 1);
+        }
+        getView().print("No assignment to grade");
+        return null;
     }
 
     private boolean present(Student student){
         getView().print("Is " + student.getName() + " present? \n 0/1");
         int option = getView().getInputInt(0,1);
         return (option != 0);
+    }
+
+    private String setEmail(){
+        String email;
+        boolean isUnique = true;
+        do{
+            email = getView().getInputString("Email?");
+            isUnique = isEmailUnique(email);
+            if (!isUnique){getView().print("Already in database");}
+        }while (!isUnique);
+        return email;
     }
 }
 
