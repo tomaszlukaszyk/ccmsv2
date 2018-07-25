@@ -22,6 +22,7 @@ public abstract class UserController {
         List<Student> students = new XMLStudentsDAO().readStudents();
         for(Student student :students){
             System.out.println(student.getName() + " " + student.getEmail());
+            view.waitForConfirm();
         }
     }
 
