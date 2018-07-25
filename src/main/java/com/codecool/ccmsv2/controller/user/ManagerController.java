@@ -81,16 +81,20 @@ public class ManagerController extends UserController {
         for (int i=0; i<users.size(); i++) {
             getView().print(String.format("\n%d. %s", i + 1, users.get(i)));
         }
+        getView().print("\n");
+
     }
 
     private void showStudents() {
         List<Student> students = studentsDAO.readStudents();
         showUsers(students);
+        getView().waitForConfirm();
     }
 
     private void showMentors() {
         List<Mentor> mentors = mentorsDAO.readMentors();
         showUsers(mentors);
+        getView().waitForConfirm();
     }
 
     private String[] getBasicUserData() {
@@ -147,7 +151,7 @@ public class ManagerController extends UserController {
     private int chooseUserData() {
         String[] data = new String[]{"name", "email", "password"};
 
-        getView().print("Choose data to edit:");
+        getView().print("\nChoose data to edit:");
         for (int i=0; i<data.length; i++){
             getView().print(String.format("\n%d. %s", i + 1, data[i]));
         }
@@ -165,6 +169,7 @@ public class ManagerController extends UserController {
     private void showEmployees() {
         List<Employee> employees = employeesDAO.readEmployees();
         showUsers(employees);
+        getView().waitForConfirm();
     }
 
     private void addEmployee() {
