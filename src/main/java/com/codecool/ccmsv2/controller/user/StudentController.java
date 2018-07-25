@@ -20,7 +20,6 @@ public class StudentController extends UserController {
 
     public void startUserSession(){
         welcomeUser();
-        int option = 1;
         while (!(option==0 )){
 
             getView().printMenu("Exit",
