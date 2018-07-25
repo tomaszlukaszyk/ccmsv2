@@ -45,7 +45,7 @@ public class MentorController extends UserController {
         Assignment assignment = chooseAssignment(studentsAssig);
         if (!(assignment == null)) {
             assignment.setGrade(getView().getInputString("Grade?"));
-            xmlStudentsDAO.gradeAssignment(student, assignment);
+            xmlStudentsDAO.updateAssignment(student, assignment);
         }
     }
 

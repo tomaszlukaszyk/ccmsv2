@@ -59,7 +59,7 @@ public class StudentController extends UserController {
         Assignment assignmentToSubmit = findAssignment(assignmentList);
         String submissionLink = getView().getInputString("Link to assignment?");
         assignmentToSubmit.setSubmissionLink(submissionLink);
-        xmlStudentsDAO.writeStudents(student, assignmentToSubmit);
+        xmlStudentsDAO.updateAssignment(student, assignmentToSubmit);
     }
 
     private void showGrades(){
