@@ -103,12 +103,15 @@ public class MentorController extends UserController {
         return email;
     }
 
+    private void showAttendance(){
+        Map<String, List<String>> attendance = new CSVAttendanceDAO().readAttendance();
+        for (String key : attendance.keySet()){
+            getView().print(key + attendance.get(key) + "\n");
 
-    private boolean present(Student student){
-        getView().print("Is" + student.getName() + "Present? \n 0/1");
-        int option = getView().getInputInt(0,1);
-        return (option != 0);
+        }
+        getView().waitForConfirm();
     }
+
 
     public void startUserSession(){
         welcomeUser();
@@ -120,8 +123,9 @@ public class MentorController extends UserController {
                 "Add Student",
                 "Remove Student",
                 "Edit Student",
-                "Show Students");
-        int option = getView().getInputInt(0,8);
+                "Show Students",
+                "Show Attendance");
+        int option = getView().getInputInt(0,9);
         while (!(option==0 )){
             switch (option){
                 case 1:
@@ -148,6 +152,8 @@ public class MentorController extends UserController {
                 case 8:
                     showStudens();
                     break;
+                case 9:
+                    showAttendance();
             }
             getView().printMenu("Exit",
                     "Check Attendance",
@@ -157,8 +163,9 @@ public class MentorController extends UserController {
                     "Add Student",
                     "Remove Student",
                     "Edit Student",
-                    "Show Students");
-            option = getView().getInputInt(0,8);
+                    "Show Students",
+                    "Show Attendance");
+            option = getView().getInputInt(0,9);
         }
     }
 
@@ -176,6 +183,12 @@ public class MentorController extends UserController {
         }
         int option = getView().getInputInt(1, assignmentsList.size());
         return assignmentsList.get(option-1);
+    }
+
+    private boolean present(Student student){
+        getView().print("Is " + student.getName() + " present? \n 0/1");
+        int option = getView().getInputInt(0,1);
+        return (option != 0);
     }
 }
 

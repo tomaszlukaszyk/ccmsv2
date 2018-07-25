@@ -20,11 +20,13 @@ public class CSVAttendanceDAO implements AttendanceDAO {
 
     public void writeAttendance(String date, List<String> students) {
         Map<String, List<String>> attendanceMap = readAttendance();
-        attendanceMap.put(date,students);
+        if (!students.isEmpty()) {
+            attendanceMap.put(date, students);
+        }
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
                 for (String key : attendanceMap.keySet()) {
-                    String line = key + "|"+ concatenateStudents(key, attendanceMap);
+                    String line = key + "|"+ concatenateStudents(attendanceMap.get(key));
                     writer.append(line + "\n");
                 }
                 writer.close();
@@ -35,10 +37,10 @@ public class CSVAttendanceDAO implements AttendanceDAO {
 
     }
 
-    private String concatenateStudents(String key, Map<String, List<String>> attendanceMap){
-        String concatenatedStudents = null;
-        for (String student : attendanceMap.get(key)){
-            concatenatedStudents = concatenatedStudents + "|" + student;
+    private String concatenateStudents(List<String> students){
+        String concatenatedStudents = students.get(0);
+        for (int i = 1; i<students.size(); i++){
+            concatenatedStudents = concatenatedStudents + "|" + students.get(i);
         }
         return concatenatedStudents;
     }
