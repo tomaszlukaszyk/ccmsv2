@@ -41,14 +41,15 @@ public class MentorController extends UserController {
         csvAssignmentsDAO.writeAssignments(assignments);
     }
 
-    // Przepisz tak żeby sprawdzał czy jest submission link i go wyświetlał.
     private void gradeAssignment() {
         List<Student> students= xmlStudentsDAO.readStudents();
         Student student = chooseStudent(students);
         List<Assignment> studentsAssig = xmlStudentsDAO.readStudentAssignments(student.getEmail());
         Assignment assignment = chooseAssignment(studentsAssig);
-        assignment.setGrade(getView().getInputString("Grade?"));
-        xmlStudentsDAO.writeStudents(student, assignment);
+        if (!(assignment == null)) {
+            assignment.setGrade(getView().getInputString("Grade?"));
+            xmlStudentsDAO.writeStudents(student, assignment);
+        }
     }
 
     private void checkAttendance(){
@@ -159,11 +160,19 @@ public class MentorController extends UserController {
     }
 
     private Assignment chooseAssignment(List<Assignment> assignmentsList){
+        int counter = 0;
         for (int i =0; i<assignmentsList.size(); i++){
-            getView().print(i+1+ ". " + assignmentsList.get(i).toString()+ "\n");
+            if (!assignmentsList.get(i).getSubmissionLink().isEmpty()) {
+                getView().print(i + 1 + ". " + assignmentsList.get(i).toString() + "\n");
+                counter ++;
+            }
         }
-        int option = getView().getInputInt(1, assignmentsList.size());
-        return assignmentsList.get(option-1);
+        if (counter > 0) {
+            int option = getView().getInputInt(1, counter);
+            return assignmentsList.get(option - 1);
+        }
+        getView().print("No assignment to grade");
+        return null;
     }
 
     private boolean present(Student student){
