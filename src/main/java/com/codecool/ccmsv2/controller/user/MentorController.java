@@ -27,8 +27,9 @@ public class MentorController extends UserController {
     private void showAssignments(){
         List<Assignment> assignments = csvAssignmentsDAO.readAssignments();
         for (Assignment assignment :assignments){
-            getView().print(assignment.toString());
+            getView().print(assignment.toString() + "\n");
         }
+        getView().waitForConfirm();
     }
 
     private void addAssignment(){
@@ -110,6 +111,7 @@ public class MentorController extends UserController {
     }
 
     public void startUserSession(){
+        welcomeUser();
         getView().printMenu("Exit",
                 "Check Attendance",
                 "Show assignments",
@@ -117,8 +119,9 @@ public class MentorController extends UserController {
                 "Add assignment",
                 "Add Student",
                 "Remove Student",
-                "Edit Student");
-        int option = getView().getInputInt(0,4);
+                "Edit Student",
+                "Show Students");
+        int option = getView().getInputInt(0,8);
         while (!(option==0 )){
             switch (option){
                 case 1:
@@ -133,7 +136,7 @@ public class MentorController extends UserController {
                 case 4:
                     addAssignment();
                     break;
-                case  5:
+                case 5:
                     addStudent();
                     break;
                 case 6:
@@ -141,8 +144,21 @@ public class MentorController extends UserController {
                     break;
                 case 7:
                     editStudent();
+                    break;
+                case 8:
+                    showStudens();
+                    break;
             }
-            option = getView().getInputInt(0,4);
+            getView().printMenu("Exit",
+                    "Check Attendance",
+                    "Show assignments",
+                    "Grade assignments",
+                    "Add assignment",
+                    "Add Student",
+                    "Remove Student",
+                    "Edit Student",
+                    "Show Students");
+            option = getView().getInputInt(0,8);
         }
     }
 
