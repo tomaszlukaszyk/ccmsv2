@@ -43,7 +43,6 @@ public abstract class UserController {
     }
 
     public boolean isEmailUnique(String email){
-        boolean isEmailUnique = true;
         List<String> studEmails = new XMLStudentsDAO().readStudentsEmails();
         List<String> mentorsEmails = new CsvMentorsDAO().readMentorsEmails();
         List<String> employeesEmails = new CsvEmployeesDAO().readEmployeesEmails();
@@ -52,6 +51,6 @@ public abstract class UserController {
         if (mentorsEmails.contains(email)) {return false;}
         if (employeesEmails.contains(email)) {return false;}
         if (managersEmails.contains(email)) {return false;}
-        return isEmailUnique;
+        return true;
     }
 }
