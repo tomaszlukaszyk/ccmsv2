@@ -9,6 +9,9 @@ public interface StudentsDAO {
     List<String> readStudentsEmails();
     Student readStudentByEmail(String email);
     List<Student> readStudents();
-    void writeStudents(Student student, Assignment assignment);
+    void writeStudents(Student student, List<Assignment> assignmentList);
+    void removeStudent(List<Student> students);
+    void gradeAssignment(Student student, Assignment assignment);
+    void addAssignment(List<Assignment> assignments);
     List<Assignment> readStudentAssignments(String email);
 }
