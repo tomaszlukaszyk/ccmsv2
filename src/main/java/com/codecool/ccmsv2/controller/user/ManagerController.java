@@ -175,4 +175,31 @@ public class ManagerController extends UserController {
         employees.add(employee);
         employeesDAO.writeEmployees(employees);
     }
+
+    private void editEmployee() {
+
+        List<Employee> employees = employeesDAO.readEmployees();
+        Employee employee = employees.get(chooseUser(employees));
+        int chosenDataIndex = chooseUserData();
+
+        switch (chosenDataIndex) {
+            case 1:
+                getView().print("Old name: " + employee.getName());
+                String name = getView().getInputString("New name: ");
+                employee.setName(name);
+                break;
+            case 2:
+                getView().print("Old email: " + employee.getEmail());
+                String email = getView().getInputString("New email: ");
+                employee.setEmail(email);
+                break;
+            case 3:
+                getView().print("Old password: " + employee.getPassword());
+                String password = getView().getInputString("New password: ");
+                employee.setPassword(password);
+                break;
+        }
+
+        employeesDAO.writeEmployees(employees);
+    }
 }
