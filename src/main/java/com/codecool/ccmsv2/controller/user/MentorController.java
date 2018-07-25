@@ -27,8 +27,9 @@ public class MentorController extends UserController {
     private void showAssignments(){
         List<Assignment> assignments = csvAssignmentsDAO.readAssignments();
         for (Assignment assignment :assignments){
-            getView().print(assignment.toString());
+            getView().print(assignment.toString() + "\n");
         }
+        getView().waitForConfirm();
     }
 
     private void addAssignment(){
@@ -102,14 +103,18 @@ public class MentorController extends UserController {
         return email;
     }
 
+    private void showAttendance(){
+        Map<String, List<String>> attendance = new CSVAttendanceDAO().readAttendance();
+        for (String key : attendance.keySet()){
+            getView().print(key + attendance.get(key) + "\n");
 
-    private boolean present(Student student){
-        getView().print("Is" + student.getName() + "Present? \n 0/1");
-        int option = getView().getInputInt(0,1);
-        return (option != 0);
+        }
+        getView().waitForConfirm();
     }
 
+
     public void startUserSession(){
+        welcomeUser();
         getView().printMenu("Exit",
                 "Check Attendance",
                 "Show assignments",
@@ -117,8 +122,10 @@ public class MentorController extends UserController {
                 "Add assignment",
                 "Add Student",
                 "Remove Student",
-                "Edit Student");
-        int option = getView().getInputInt(0,4);
+                "Edit Student",
+                "Show Students",
+                "Show Attendance");
+        int option = getView().getInputInt(0,9);
         while (!(option==0 )){
             switch (option){
                 case 1:
@@ -133,7 +140,7 @@ public class MentorController extends UserController {
                 case 4:
                     addAssignment();
                     break;
-                case  5:
+                case 5:
                     addStudent();
                     break;
                 case 6:
@@ -141,8 +148,24 @@ public class MentorController extends UserController {
                     break;
                 case 7:
                     editStudent();
+                    break;
+                case 8:
+                    showStudens();
+                    break;
+                case 9:
+                    showAttendance();
             }
-            option = getView().getInputInt(0,4);
+            getView().printMenu("Exit",
+                    "Check Attendance",
+                    "Show assignments",
+                    "Grade assignments",
+                    "Add assignment",
+                    "Add Student",
+                    "Remove Student",
+                    "Edit Student",
+                    "Show Students",
+                    "Show Attendance");
+            option = getView().getInputInt(0,9);
         }
     }
 
@@ -160,6 +183,12 @@ public class MentorController extends UserController {
         }
         int option = getView().getInputInt(1, assignmentsList.size());
         return assignmentsList.get(option-1);
+    }
+
+    private boolean present(Student student){
+        getView().print("Is " + student.getName() + " present? \n 0/1");
+        int option = getView().getInputInt(0,1);
+        return (option != 0);
     }
 }
 

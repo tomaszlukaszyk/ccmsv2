@@ -27,7 +27,7 @@ public class CSVAssignmentsDAO implements AssignmentDAO {
         Scanner fileReader = loadFile();
         while (fileReader.hasNext()){
             String[] line = fileReader.nextLine().split("\\|");
-            if(line[DESCRIPTION_INDEX].equals(name)){
+            if(line[NAME_INDEX].equals(name)){
                 return line[DESCRIPTION_INDEX];
             }
         }

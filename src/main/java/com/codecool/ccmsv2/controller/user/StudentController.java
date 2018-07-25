@@ -19,6 +19,7 @@ public class StudentController extends UserController {
 
 
     public void startUserSession(){
+        welcomeUser();
         getView().printMenu("Exit",
                 "Assignment List",
                 "Grades",
@@ -40,6 +41,11 @@ public class StudentController extends UserController {
                     submitAssignment();
                     break;
             }
+            getView().printMenu("Exit",
+                    "Assignment List",
+                    "Grades",
+                    "Get Assignment Details",
+                    "Submit Assignment");
             option = getView().getInputInt(0,4);
         }
     }
@@ -48,6 +54,7 @@ public class StudentController extends UserController {
         List<Assignment> assignmentList = xmlStudentsDAO.readStudentAssignments(getUser().getEmail());
         String name = findAssignmentName(assignmentList);
         System.out.println(name +"\n" + new CSVAssignmentsDAO().getAssignmentDescriptionByName(name));
+        getView().waitForConfirm();
     }
 
     private void submitAssignment(){
@@ -63,13 +70,15 @@ public class StudentController extends UserController {
         for (Assignment assignment : assignmentList){
             System.out.println(assignment.getName() +":  " + assignment.getGrade());
         }
+        getView().waitForConfirm();
     }
 
     private void showAssignments(){
         List<Assignment> assignmentList = new XMLStudentsDAO().readStudentAssignments(getUser().getEmail());
         for (Assignment assignment : assignmentList){
-            System.out.println(assignment);
+            System.out.println(assignment.getName() + "\n" + assignment.getSubmissionLink());
         }
+        getView().waitForConfirm();
     }
 
     private Assignment findAssignment(List<Assignment> assignments){
@@ -84,9 +93,9 @@ public class StudentController extends UserController {
 
     private String findAssignmentName(List<Assignment> assignmentsList){
         for (int i =0; i<assignmentsList.size(); i++){
-            getView().print(i+1+ ". " + assignmentsList.get(i).toString());
+            getView().print(i+1+ ". " + assignmentsList.get(i).getName() + "\n");
         }
-        int option = getView().getInputInt(0, assignmentsList.size());
-        return assignmentsList.get(option+1).getName();
+        int option = getView().getInputInt(1, assignmentsList.size());
+        return assignmentsList.get(option-1).getName();
     }
 }

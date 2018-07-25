@@ -50,4 +50,8 @@ public class View {
 
         print(String.format("    (0) %s\n", items[0]));
     }
+
+    public void waitForConfirm(){
+        getInputString("Press enter to continue");
+    }
 }

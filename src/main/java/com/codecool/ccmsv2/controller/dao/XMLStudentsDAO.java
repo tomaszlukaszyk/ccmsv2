@@ -51,7 +51,9 @@ public class XMLStudentsDAO implements StudentsDAO {
         NodeList students = parsedXML.getElementsByTagName("Student");
         for (int i = 0; i<students.getLength(); i++){
             Element student = (Element) students.item(i);
-            assignments = populateAssignmentList(student, email);
+            if (student.getAttribute("email").equals(email)) {
+                assignments = populateAssignmentList(student);
+            }
         }
         return assignments;
     }
@@ -71,9 +73,6 @@ public class XMLStudentsDAO implements StudentsDAO {
         try {
             Element rootElement = prepareXMLStructure();
             List<Student> students = readStudents();
-            if (!students.contains(student)) {
-                students.add(student);
-            }
             for (Student stud : students){
                 List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
                 if (stud.getEmail().equals(student.getEmail())){
@@ -127,6 +126,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         try {
             Element rootElement = prepareXMLStructure();
             List<Student> students = readStudents();
+            students.add(student);
             for (Student stud : students){
                 List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
                 if (stud.getEmail().equals(student.getEmail())){
@@ -160,15 +160,10 @@ public class XMLStudentsDAO implements StudentsDAO {
 
     private List<Assignment> upDateStudentAssignments(Student stud, Assignment newAssignment) {
         List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
-        boolean updatingAssignment = true;
         for (Assignment assignment : studentAssignments){
             if (assignment.getName().equals(newAssignment.getName())){
                 studentAssignments.set(studentAssignments.indexOf(assignment), newAssignment);
-                updatingAssignment = false;
             }
-        }
-        if (!updatingAssignment){
-            studentAssignments.add(newAssignment);
         }
         return studentAssignments;
     }
@@ -223,9 +218,8 @@ public class XMLStudentsDAO implements StudentsDAO {
     }
 
 
-    private List<Assignment> populateAssignmentList(Element student, String email){
+    private List<Assignment> populateAssignmentList(Element student){
         List<Assignment> assignmentsList = new ArrayList<>();
-        if (student.getAttribute("email").equals(email)){
             NodeList assignments = student.getElementsByTagName("Assignment");
             for(int i = 0; i<assignments.getLength(); i++){
                 Element assignment = (Element) assignments.item(i);
@@ -235,7 +229,6 @@ public class XMLStudentsDAO implements StudentsDAO {
                 String description = (new CSVAssignmentsDAO()).getAssignmentDescriptionByName(assName);
                 assignmentsList.add(new Assignment(assName, description, submissionLink, grade));
             }
-        }
         return assignmentsList;
     }
 
