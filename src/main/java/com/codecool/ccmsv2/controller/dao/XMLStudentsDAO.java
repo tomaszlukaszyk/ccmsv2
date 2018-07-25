@@ -69,7 +69,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         return studentsList;
     }
 
-    public void writeStudents(Student student, Assignment assignment){
+    public void gradeAssignment(Student student, Assignment assignment){
         try {
             Element rootElement = prepareXMLStructure();
             List<Student> students = readStudents();
@@ -88,30 +88,11 @@ public class XMLStudentsDAO implements StudentsDAO {
         }
     }
 
-    public void writeStudents(List<Student> students){
+    public void removeStudent(List<Student> students){
         try {
             Element rootElement = prepareXMLStructure();
             for (Student stud : students){
                 List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
-                serializeStudentData(stud, rootElement, studentAssignments);
-            }
-            exportToFile();
-        }catch (ParserConfigurationException e){
-            e.printStackTrace();
-        }catch (TransformerException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void writeStudents(Student student){
-        try {
-            Element rootElement = prepareXMLStructure();
-            List<Student> students = readStudents();
-            for (Student stud : students){
-                List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
-                if (stud.getEmail().equals(student.getEmail())){
-                    stud = student;
-                }
                 serializeStudentData(stud, rootElement, studentAssignments);
             }
             exportToFile();
@@ -142,7 +123,8 @@ public class XMLStudentsDAO implements StudentsDAO {
         }
     }
 
-    public void writeStudents(List<Student> students, List<Assignment> assignments){
+    public void addAssignment(List<Assignment> assignments){
+        List<Student> students = readStudents();
         try {
             Element rootElement = prepareXMLStructure();
             for (Student stud : students){
