@@ -60,10 +60,10 @@ public class ManagerController extends UserController {
                     removeMentor();
                     break;
                 case 6:
-                    // TODO: show employees
+                    showEmployees();
                     break;
                 case 7:
-                    // TODO: add employee
+                    addEmployee();
                     break;
                 case 8:
                     // TODO: edit employee
@@ -165,5 +165,14 @@ public class ManagerController extends UserController {
     private void showEmployees() {
         List<Employee> employees = employeesDAO.readEmployees();
         showUsers(employees);
+    }
+
+    private void addEmployee() {
+
+        List<Employee> employees = employeesDAO.readEmployees();
+        String[] basicUserData = getBasicUserData();
+        Employee employee = new Employee(basicUserData[0], basicUserData[1], basicUserData[2]);
+        employees.add(employee);
+        employeesDAO.writeEmployees(employees);
     }
 }
