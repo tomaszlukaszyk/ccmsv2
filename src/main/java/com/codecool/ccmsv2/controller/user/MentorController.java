@@ -1,8 +1,6 @@
 package com.codecool.ccmsv2.controller.user;
 
-import com.codecool.ccmsv2.controller.dao.CSVAssignmentsDAO;
-import com.codecool.ccmsv2.controller.dao.CSVAttendanceDAO;
-import com.codecool.ccmsv2.controller.dao.XMLStudentsDAO;
+import com.codecool.ccmsv2.controller.dao.*;
 import com.codecool.ccmsv2.model.Assignment;
 import com.codecool.ccmsv2.model.Mentor;
 import com.codecool.ccmsv2.model.Student;
@@ -13,9 +11,9 @@ import java.util.*;
 
 public class MentorController extends UserController {
 
-    private CSVAssignmentsDAO csvAssignmentsDAO;
-    private XMLStudentsDAO xmlStudentsDAO;
-    private CSVAttendanceDAO csvAttendanceDAO;
+    private AssignmentDAO csvAssignmentsDAO;
+    private StudentsDAO xmlStudentsDAO;
+    private AttendanceDAO csvAttendanceDAO;
 
     public MentorController(Mentor mentor){
         super(mentor);
@@ -36,8 +34,7 @@ public class MentorController extends UserController {
         List<Assignment> assignments = csvAssignmentsDAO.readAssignments();
         assignments.add(new Assignment
                 (getView().getInputString("Name?"), getView().getInputString("Description?")));
-        List<Student> students =xmlStudentsDAO.readStudents();
-        xmlStudentsDAO.writeStudents(students, assignments);
+        xmlStudentsDAO.addAssignment(assignments);
         csvAssignmentsDAO.writeAssignments(assignments);
     }
 
@@ -48,7 +45,7 @@ public class MentorController extends UserController {
         Assignment assignment = chooseAssignment(studentsAssig);
         if (!(assignment == null)) {
             assignment.setGrade(getView().getInputString("Grade?"));
-            xmlStudentsDAO.writeStudents(student, assignment);
+            xmlStudentsDAO.gradeAssignment(student, assignment);
         }
     }
 
@@ -79,16 +76,19 @@ public class MentorController extends UserController {
         List<Student> students = xmlStudentsDAO.readStudents();
         Student student = chooseStudent(students);
         students.remove(student);
-        xmlStudentsDAO.writeStudents(students);
+        xmlStudentsDAO.removeStudent(students);
     }
 
     private void editStudent(){
         List<Student> students = xmlStudentsDAO.readStudents();
         Student student = chooseStudent(students);
+        List<Assignment> assignments = xmlStudentsDAO.readStudentAssignments(student.getEmail());
         student.setEmail(getView().getInputString("New Email?"));
         student.setName(getView().getInputString("New Name?"));
         student.setPassword(getView().getInputString("New Password?"));
-        xmlStudentsDAO.writeStudents(student);
+        students.remove(student);
+        xmlStudentsDAO.removeStudent(students);
+        xmlStudentsDAO.writeStudents(student, assignments);
     }
 
 
