@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Logger {
 
-    private UserController userController = null;
+    private UserController userController;
     private View view = new View();
     private StudentsDAO studentsDAO = new XMLStudentsDAO();
     private MentorsDAO mentorsDAO = new CsvMentorsDAO();
@@ -19,10 +19,11 @@ public class Logger {
 
     public void logIn() {
 
+        userController = null;
         String email = view.getInputString("Enter email: ");
         setControllerIfEmailOnStudentsList(email);
         setControllerIfEmailOnMentorsList(email);
-        setControllerIfEmailOnEmployeestList(email);
+        setControllerIfEmailOnEmployeesList(email);
         setControllerIfEmailOnManagersList(email);
 
         if (!userInDatabase && userController == null) {
@@ -66,7 +67,7 @@ public class Logger {
         }
     }
 
-    private void setControllerIfEmailOnEmployeestList(String email){
+    private void setControllerIfEmailOnEmployeesList(String email){
         List<String> employeesEmails = employeesDAO.readEmployeesEmails();
 
         if (employeesEmails.contains(email)) {

@@ -16,16 +16,17 @@ public class View {
     }
 
     public int getInputInt(int start, int end) {
-        print(String.format("\nEnter a number from %d to %d: ", start, end));
         boolean isCorrect = false;
         int input = 0;
         while(!isCorrect) {
+            print(String.format("\nEnter a number from %d to %d: ", start, end));
             try{
                 input = Integer.parseInt(scanner.nextLine());
 
 
             }catch(NumberFormatException e) {
                 print("\nThis is not a number. Try again!");
+                continue;
             }
             if(input  >= start && input <= end) {
                 isCorrect = true;
