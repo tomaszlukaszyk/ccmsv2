@@ -20,13 +20,16 @@ public class StudentController extends UserController {
 
     public void startUserSession(){
         welcomeUser();
-        getView().printMenu("Exit",
-                "Assignment List",
-                "Grades",
-                "Get Assignment Details",
-                "Submit Assignment");
-        int option = getView().getInputInt(0,4);
         while (!(option==0 )){
+
+            getView().printMenu("Exit",
+                    "Assignment List",
+                    "Grades",
+                    "Get Assignment Details",
+                    "Submit Assignment");
+
+            option = getView().getInputInt(0,4);
+
             switch (option){
                 case 1:
                     showAssignments();
@@ -41,12 +44,6 @@ public class StudentController extends UserController {
                     submitAssignment();
                     break;
             }
-            getView().printMenu("Exit",
-                    "Assignment List",
-                    "Grades",
-                    "Get Assignment Details",
-                    "Submit Assignment");
-            option = getView().getInputInt(0,4);
         }
     }
 
