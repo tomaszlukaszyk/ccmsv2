@@ -55,7 +55,7 @@ public class ManagerController extends UserController {
                     showMentors();
                     break;
                 case 3:
-                    // TODO: add mentor
+                    addMentor();
                     break;
                 case 4:
                     // TODO: edit mentor
@@ -95,5 +95,23 @@ public class ManagerController extends UserController {
     private void showMentors() {
         List<Mentor> mentors = mentorsDAO.readMentors();
         showUsers(mentors);
+    }
+
+    private String[] getBasicUserData() {
+
+        String name = getView().getInputString("Enter name: ");
+        String email = getView().getInputString("Enter email: ");
+        String password = getView().getInputString("Enter password: ");
+
+        return new String[]{name, email, password};
+    }
+
+    private void addMentor() {
+
+        List<Mentor> mentors = mentorsDAO.readMentors();
+        String[] basicUserData = getBasicUserData();
+        Mentor mentor = new Mentor(basicUserData[0], basicUserData[1], basicUserData[2]);
+        mentors.add(mentor);
+        mentorsDAO.writeMentors(mentors);
     }
 }
