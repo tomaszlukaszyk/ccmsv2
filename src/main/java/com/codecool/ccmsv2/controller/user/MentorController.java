@@ -66,8 +66,7 @@ public class MentorController extends UserController {
 
     private void addStudent(){
         List<Assignment>assignments = csvAssignmentsDAO.readAssignments();
-        List<String> studEmails = xmlStudentsDAO.readStudentsEmails();
-        String email = setEmail(studEmails);
+        String email = setEmail();
         String name = getView().getInputString("Name?");
         String password = getView().getInputString("Password");
         Student student = new Student(email,name,password);
@@ -90,16 +89,12 @@ public class MentorController extends UserController {
         xmlStudentsDAO.writeStudents(student);
     }
 
-    private String setEmail(List<String> existingEmails){
-        boolean isEmailUnique = true;
+    private String setEmail(){
         String email;
         do{
             email = getView().getInputString("Email?");
-            if (existingEmails.contains(email)){
-                isEmailUnique =false;
-                getView().print("Such email exists in DBase");
-            }
-        }while (!isEmailUnique);
+            getView().print("Such email exists in DBase");
+        }while (!isEmailUnique(email));
         return email;
     }
 
@@ -115,18 +110,23 @@ public class MentorController extends UserController {
 
     public void startUserSession(){
         welcomeUser();
-        getView().printMenu("Exit",
-                "Check Attendance",
-                "Show assignments",
-                "Grade assignments",
-                "Add assignment",
-                "Add Student",
-                "Remove Student",
-                "Edit Student",
-                "Show Students",
-                "Show Attendance");
-        int option = getView().getInputInt(0,9);
+        int option = 1;
+
         while (!(option==0 )){
+
+            getView().printMenu("Exit",
+                    "Check Attendance",
+                    "Show assignments",
+                    "Grade assignments",
+                    "Add assignment",
+                    "Add Student",
+                    "Remove Student",
+                    "Edit Student",
+                    "Show Students",
+                    "Show Attendance");
+
+            option = getView().getInputInt(0,9);
+
             switch (option){
                 case 1:
                     checkAttendance();
@@ -155,17 +155,6 @@ public class MentorController extends UserController {
                 case 9:
                     showAttendance();
             }
-            getView().printMenu("Exit",
-                    "Check Attendance",
-                    "Show assignments",
-                    "Grade assignments",
-                    "Add assignment",
-                    "Add Student",
-                    "Remove Student",
-                    "Edit Student",
-                    "Show Students",
-                    "Show Attendance");
-            option = getView().getInputInt(0,9);
         }
     }
 

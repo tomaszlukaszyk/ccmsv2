@@ -9,10 +9,13 @@ public class EmployeeController extends UserController {
     }
 
     public void startUserSession() {
-        getView().printMenu("Exit",
-                "Show Students");
-        int option = getView().getInputInt(0, 4);
+        int option = 1;
         while (!(option == 0)) {
+
+            getView().printMenu("Exit",
+                    "Show Students");
+            option = getView().getInputInt(0, 4);
+
             switch (option) {
                 case 1:
                     showStudens();
