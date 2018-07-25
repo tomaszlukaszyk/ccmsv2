@@ -100,10 +100,26 @@ public class ManagerController extends UserController {
     private String[] getBasicUserData() {
 
         String name = getView().getInputString("Enter name: ");
-        String email = getView().getInputString("Enter email: ");
+        String email = getEmail("Enter email: ");
         String password = getView().getInputString("Enter password: ");
 
         return new String[]{name, email, password};
+    }
+
+    private String getEmail(String message) {
+
+        String email = "";
+
+        while (email.equals("")) {
+
+            email = getView().getInputString(message);
+            if (!isEmailUnique(email)) {
+                getView().print("That email already exists in database. Use another.");
+                email = "";
+            }
+        }
+
+        return email;
     }
 
     private void addMentor() {
@@ -129,7 +145,7 @@ public class ManagerController extends UserController {
                 break;
             case 2:
                 getView().print("Old email: " + mentor.getEmail());
-                String email = getView().getInputString("New email: ");
+                String email = getEmail("New email: ");
                 mentor.setEmail(email);
                 break;
             case 3:
@@ -195,7 +211,7 @@ public class ManagerController extends UserController {
                 break;
             case 2:
                 getView().print("Old email: " + employee.getEmail());
-                String email = getView().getInputString("New email: ");
+                String email = getEmail("New email: ");
                 employee.setEmail(email);
                 break;
             case 3:
