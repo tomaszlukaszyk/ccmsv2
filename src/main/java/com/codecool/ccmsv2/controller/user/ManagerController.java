@@ -1,13 +1,7 @@
 package com.codecool.ccmsv2.controller.user;
 
-import com.codecool.ccmsv2.controller.dao.CsvMentorsDAO;
-import com.codecool.ccmsv2.controller.dao.MentorsDAO;
-import com.codecool.ccmsv2.controller.dao.StudentsDAO;
-import com.codecool.ccmsv2.controller.dao.XMLStudentsDAO;
-import com.codecool.ccmsv2.model.Manager;
-import com.codecool.ccmsv2.model.Mentor;
-import com.codecool.ccmsv2.model.Student;
-import com.codecool.ccmsv2.model.User;
+import com.codecool.ccmsv2.controller.dao.*;
+import com.codecool.ccmsv2.model.*;
 
 import java.util.List;
 
@@ -15,11 +9,13 @@ public class ManagerController extends UserController {
 
     private StudentsDAO studentsDAO;
     private MentorsDAO mentorsDAO;
+    private EmployeesDAO employeesDAO;
 
     public ManagerController(Manager manager) {
         super(manager);
         studentsDAO = new XMLStudentsDAO();
         mentorsDAO = new CsvMentorsDAO();
+        employeesDAO = new CsvEmployeesDAO();
     }
 
     @Override
@@ -61,7 +57,7 @@ public class ManagerController extends UserController {
                     editMentor();
                     break;
                 case 5:
-                    // TODO: remove mentor
+                    removeMentor();
                     break;
                 case 6:
                     // TODO: show employees
@@ -164,5 +160,10 @@ public class ManagerController extends UserController {
         getView().print("Choose a mentor you want to remove:");
         mentors.remove(chooseUser(mentors));
         mentorsDAO.writeMentors(mentors);
+    }
+
+    private void showEmployees() {
+        List<Employee> employees = employeesDAO.readEmployees();
+        showUsers(employees);
     }
 }
