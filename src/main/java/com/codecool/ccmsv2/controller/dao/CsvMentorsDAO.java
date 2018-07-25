@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 public class CsvMentorsDAO implements MentorsDAO {
 
-    final String filePath = CsvMentorsDAO.class.getClassLoader().getResource("users/mentors.csv").getPath();
-    final int EMAIL_COL = 0;
-    final int NAME_COL = 1;
-    final int PASSWORD_COL = 2;
+    private final String filePath = CsvMentorsDAO.class.getClassLoader().getResource("users/mentors.csv").getPath();
+    private final int EMAIL_COL = 0;
+    private final int NAME_COL = 1;
+    private final int PASSWORD_COL = 2;
 
     @Override
     public List<String> readMentorsEmails() {

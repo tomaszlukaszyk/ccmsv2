@@ -14,12 +14,12 @@ public class EmployeeController extends UserController {
 
             getView().printMenu("Exit",
                     "Show Students");
-            option = getView().getInputInt(0, 4);
+            option = getView().getInputInt(0, 1);
 
             switch (option) {
                 case 1:
                     showStudens();
-                    option = getView().getInputInt(0, 1);
+                    break;
             }
         }
     }
