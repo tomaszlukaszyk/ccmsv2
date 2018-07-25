@@ -130,9 +130,7 @@ public class XMLStudentsDAO implements StudentsDAO {
             for (Student stud : students){
                 List<Assignment> studentAssignments = readStudentAssignments(stud.getEmail());
                 if (stud.getEmail().equals(student.getEmail())){
-                    for (Assignment assignment : assignmentList) {
-                        studentAssignments = upDateStudentAssignments(stud, assignment);
-                    }
+                    studentAssignments = assignmentList;
                 }
                 serializeStudentData(stud, rootElement, studentAssignments);
             }
