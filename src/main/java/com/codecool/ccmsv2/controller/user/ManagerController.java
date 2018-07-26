@@ -76,15 +76,6 @@ public class ManagerController extends UserController {
 
     }
 
-    private void showUsers(List<? extends User> users) {
-
-        for (int i=0; i<users.size(); i++) {
-            getView().print(String.format("\n%d. %s", i + 1, users.get(i)));
-        }
-        getView().print("\n");
-
-    }
-
     private void showStudents() {
         List<Student> students = studentsDAO.readStudents();
         showUsers(students);
@@ -95,31 +86,6 @@ public class ManagerController extends UserController {
         List<Mentor> mentors = mentorsDAO.readMentors();
         showUsers(mentors);
         getView().waitForConfirm();
-    }
-
-    private String[] getBasicUserData() {
-
-        String name = getView().getInputString("Enter name: ");
-        String email = getEmail("Enter email: ");
-        String password = getView().getInputString("Enter password: ");
-
-        return new String[]{name, email, password};
-    }
-
-    private String getEmail(String message) {
-
-        String email = "";
-
-        while (email.equals("")) {
-
-            email = getView().getInputString(message);
-            if (!isEmailUnique(email)) {
-                getView().print("That email already exists in database. Use another.");
-                email = "";
-            }
-        }
-
-        return email;
     }
 
     private void addMentor() {
@@ -137,42 +103,10 @@ public class ManagerController extends UserController {
         Mentor mentor = mentors.get(chooseUser(mentors));
         int chosenDataIndex = chooseUserData();
 
-        switch (chosenDataIndex) {
-            case 1:
-                getView().print("Old name: " + mentor.getName());
-                String name = getView().getInputString("New name: ");
-                mentor.setName(name);
-                break;
-            case 2:
-                getView().print("Old email: " + mentor.getEmail());
-                String email = getEmail("New email: ");
-                mentor.setEmail(email);
-                break;
-            case 3:
-                getView().print("Old password: " + mentor.getPassword());
-                String password = getView().getInputString("New password: ");
-                mentor.setPassword(password);
-                break;
-        }
+        updateChosenData(chosenDataIndex, mentor);
 
         mentorsDAO.writeMentors(mentors);
 
-    }
-
-    private int chooseUser(List<? extends User> users) {
-        showUsers(users);
-        return getView().getInputInt(1, users.size()) - 1;
-    }
-
-    private int chooseUserData() {
-        String[] data = new String[]{"name", "email", "password"};
-
-        getView().print("\nChoose data to edit:");
-        for (int i=0; i<data.length; i++){
-            getView().print(String.format("\n%d. %s", i + 1, data[i]));
-        }
-
-        return getView().getInputInt(1, data.length);
     }
 
     private void removeMentor() {
@@ -203,23 +137,7 @@ public class ManagerController extends UserController {
         Employee employee = employees.get(chooseUser(employees));
         int chosenDataIndex = chooseUserData();
 
-        switch (chosenDataIndex) {
-            case 1:
-                getView().print("Old name: " + employee.getName());
-                String name = getView().getInputString("New name: ");
-                employee.setName(name);
-                break;
-            case 2:
-                getView().print("Old email: " + employee.getEmail());
-                String email = getEmail("New email: ");
-                employee.setEmail(email);
-                break;
-            case 3:
-                getView().print("Old password: " + employee.getPassword());
-                String password = getView().getInputString("New password: ");
-                employee.setPassword(password);
-                break;
-        }
+        updateChosenData(chosenDataIndex, employee);
 
         employeesDAO.writeEmployees(employees);
     }
