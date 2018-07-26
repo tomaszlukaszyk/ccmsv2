@@ -111,7 +111,6 @@ public class ManagerController extends UserController {
 
     private void removeMentor() {
         List<Mentor> mentors = mentorsDAO.readMentors();
-        getView().print("\nChoose a mentor you want to remove:");
         mentors.remove(chooseUser(mentors));
         mentorsDAO.writeMentors(mentors);
     }
@@ -144,7 +143,6 @@ public class ManagerController extends UserController {
 
     private void removeEmployee() {
         List<Employee> employees = employeesDAO.readEmployees();
-        getView().print("\nChoose a employee you want to remove:");
         employees.remove(chooseUser(employees));
         employeesDAO.writeEmployees(employees);
     }
