@@ -9,7 +9,7 @@ public interface StudentsDAO {
     List<String> readStudentsEmails();
     Student readStudentByEmail(String email);
     List<Student> readStudents();
-    void writeStudents(Student student, List<Assignment> assignmentList);
+    void writeStudent(Student student, List<Assignment> assignmentList);
     void removeStudent(List<Student> students);
     void updateAssignment(Student student, Assignment assignment);
     void addAssignment(List<Assignment> assignments);
