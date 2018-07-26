@@ -21,7 +21,7 @@ public abstract class UserController {
     public abstract void startUserSession();
 
     public void welcomeUser(){
-        System.out.println("Welcome" + user.getName());
+        System.out.println("Welcome " + user.getName());
     }
 
     View getView(){
