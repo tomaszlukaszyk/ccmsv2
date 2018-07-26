@@ -69,7 +69,7 @@ public class MentorController extends UserController {
         String name = getView().getInputString("Name?");
         String password = getView().getInputString("Password");
         Student student = new Student(name, email, password);
-        xmlStudentsDAO.writeStudents(student, assignments);
+        xmlStudentsDAO.writeStudent(student, assignments);
     }
 
     private void removeStudent(){
@@ -88,7 +88,7 @@ public class MentorController extends UserController {
         student.setPassword(getView().getInputString("New Password?"));
         students.remove(student);
         xmlStudentsDAO.removeStudent(students);
-        xmlStudentsDAO.writeStudents(student, assignments);
+        xmlStudentsDAO.writeStudent(student, assignments);
     }
 
 

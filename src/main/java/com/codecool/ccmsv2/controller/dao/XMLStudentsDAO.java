@@ -103,7 +103,7 @@ public class XMLStudentsDAO implements StudentsDAO {
         }
     }
 
-    public void writeStudents(Student student, List<Assignment> assignmentList){
+    public void writeStudent(Student student, List<Assignment> assignmentList){
         try {
             Element rootElement = prepareXMLStructure();
             List<Student> students = readStudents();
