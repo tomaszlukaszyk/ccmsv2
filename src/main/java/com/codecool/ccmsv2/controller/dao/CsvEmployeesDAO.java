@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 public class CsvEmployeesDAO implements EmployeesDAO {
 
-    final String filePath = CsvEmployeesDAO.class.getClassLoader().getResource("users/employees.csv").getPath();
-    final int EMAIL_COL = 0;
-    final int NAME_COL = 1;
-    final int PASSWORD_COL = 2;
+    private final String filePath = CsvEmployeesDAO.class.getClassLoader().getResource("users/employees.csv").getPath();
+    private final int EMAIL_COL = 0;
+    private final int NAME_COL = 1;
+    private final int PASSWORD_COL = 2;
 
     @Override
     public List<String> readEmployeesEmails() {

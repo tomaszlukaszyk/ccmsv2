@@ -10,7 +10,7 @@ public class Main {
         Logger logger = new Logger();
         View view = new View();
         boolean isRunning = true;
-        int option = 0;
+        int option;
 
         while (isRunning) {
             view.printMenu("Exit program", "Log in");

@@ -22,6 +22,12 @@ public class MentorController extends UserController {
         csvAttendanceDAO = new CSVAttendanceDAO();
     }
 
+    private void showStudents(){
+        List <Student> students = xmlStudentsDAO.readStudents();
+        showUsers(students);
+        getView().waitForConfirm();
+    }
+
     private void showAssignments(){
         List<Assignment> assignments = csvAssignmentsDAO.readAssignments();
         for (Assignment assignment :assignments){
@@ -40,7 +46,7 @@ public class MentorController extends UserController {
 
     private void gradeAssignment() {
         List<Student> students= xmlStudentsDAO.readStudents();
-        Student student = chooseStudent(students);
+        Student student = students.get(chooseUser(students));
         List<Assignment> studentsAssig = xmlStudentsDAO.readStudentAssignments(student.getEmail());
         Assignment assignment = chooseAssignment(studentsAssig);
         if (!(assignment == null)) {
@@ -65,27 +71,24 @@ public class MentorController extends UserController {
 
     private void addStudent(){
         List<Assignment>assignments = csvAssignmentsDAO.readAssignments();
-        String email = setEmail();
-        String name = getView().getInputString("Name?");
-        String password = getView().getInputString("Password");
-        Student student = new Student(name, email, password);
+        String[] studentData = getBasicUserData();
+        Student student = new Student(studentData[0], studentData[1], studentData[2]);
         xmlStudentsDAO.writeStudent(student, assignments);
     }
 
     private void removeStudent(){
         List<Student> students = xmlStudentsDAO.readStudents();
-        Student student = chooseStudent(students);
+        Student student = students.get(chooseUser(students));
         students.remove(student);
         xmlStudentsDAO.removeStudent(students);
     }
 
     private void editStudent(){
         List<Student> students = xmlStudentsDAO.readStudents();
-        Student student = chooseStudent(students);
+        Student student = students.get(chooseUser(students));
         List<Assignment> assignments = xmlStudentsDAO.readStudentAssignments(student.getEmail());
-        student.setEmail(getView().getInputString("New Email?"));
-        student.setName(getView().getInputString("New Name?"));
-        student.setPassword(getView().getInputString("New Password?"));
+        int chosenDataIndex = chooseUserData();
+        updateChosenData(chosenDataIndex, student);
         students.remove(student);
         xmlStudentsDAO.removeStudent(students);
         xmlStudentsDAO.writeStudent(student, assignments);
@@ -143,20 +146,12 @@ public class MentorController extends UserController {
                     editStudent();
                     break;
                 case 8:
-                    showStudens();
+                    showStudents();
                     break;
                 case 9:
                     showAttendance();
             }
         }
-    }
-
-    private Student chooseStudent(List<Student> students){
-        for (int i =0; i<students.size(); i++){
-            getView().print(i+1+ ". " + students.get(i).toString() + "\n");
-        }
-        int option = getView().getInputInt(1, students.size());
-        return students.get(option-1);
     }
 
     private Assignment chooseAssignment(List<Assignment> assignmentsList){
@@ -181,15 +176,5 @@ public class MentorController extends UserController {
         return (option != 0);
     }
 
-    private String setEmail(){
-        String email;
-        boolean isUnique = true;
-        do{
-            email = getView().getInputString("Email?");
-            isUnique = isEmailUnique(email);
-            if (!isUnique){getView().print("Already in database");}
-        }while (!isUnique);
-        return email;
-    }
 }
 

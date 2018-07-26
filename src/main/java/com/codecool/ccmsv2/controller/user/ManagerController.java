@@ -22,7 +22,7 @@ public class ManagerController extends UserController {
     public void startUserSession() {
 
         boolean isRunning = true;
-        int option = 0;
+        int option;
 
         while (isRunning) {
 

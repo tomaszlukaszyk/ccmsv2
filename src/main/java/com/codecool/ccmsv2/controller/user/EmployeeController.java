@@ -1,5 +1,6 @@
 package com.codecool.ccmsv2.controller.user;
 
+import com.codecool.ccmsv2.controller.dao.XMLStudentsDAO;
 import com.codecool.ccmsv2.model.Employee;
 
 public class EmployeeController extends UserController {
@@ -18,9 +19,13 @@ public class EmployeeController extends UserController {
 
             switch (option) {
                 case 1:
-                    showStudens();
+                    showStudents();
                     break;
             }
         }
+    }
+
+    private void showStudents(){
+        showUsers(new XMLStudentsDAO().readStudents());
     }
 }

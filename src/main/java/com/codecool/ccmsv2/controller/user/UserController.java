@@ -32,7 +32,7 @@ public abstract class UserController {
         return user;
     }
 
-    boolean isEmailUnique(String email){
+    private boolean isEmailUnique(String email){
         List<String> studEmails = new XMLStudentsDAO().readStudentsEmails();
         List<String> mentorsEmails = new CsvMentorsDAO().readMentorsEmails();
         List<String> employeesEmails = new CsvEmployeesDAO().readEmployeesEmails();
@@ -78,6 +78,7 @@ public abstract class UserController {
     }
 
     int chooseUser(List<? extends User> users) {
+        view.print("\n Choose a " + users.get(0).getClass().getName());
         showUsers(users);
         return getView().getInputInt(1, users.size()) - 1;
     }

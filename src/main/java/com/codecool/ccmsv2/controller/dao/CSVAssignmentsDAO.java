@@ -38,10 +38,9 @@ public class CSVAssignmentsDAO implements AssignmentDAO {
         List<String> data = prepareAssignmentsForSaving(assignments);
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-            for (int index = 0; index < data.size(); index++) {
-                String line = data.get(index);
-                    writer.append(line + "\n");
-                }
+            for (String line : data) {
+                writer.append(line).append("\n");
+            }
                 writer.close();
         }
         catch (IOException e){

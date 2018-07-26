@@ -27,7 +27,7 @@ public class CSVAttendanceDAO implements AttendanceDAO {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
                 for (String key : attendanceMap.keySet()) {
                     String line = key + "|"+ concatenateStudents(attendanceMap.get(key));
-                    writer.append(line + "\n");
+                    writer.append(line).append("\n");
                 }
                 writer.close();
             }
@@ -38,19 +38,15 @@ public class CSVAttendanceDAO implements AttendanceDAO {
     }
 
     private String concatenateStudents(List<String> students){
-        String concatenatedStudents = students.get(0);
+        StringBuilder concatenatedStudents = new StringBuilder(students.get(0));
         for (int i = 1; i<students.size(); i++){
-            concatenatedStudents = concatenatedStudents + "|" + students.get(i);
+            concatenatedStudents.append("|").append(students.get(i));
         }
-        return concatenatedStudents;
+        return concatenatedStudents.toString();
     }
 
     private List<String> prepareStudentsList(String[] line) {
-        List<String> studentsAtDate = new ArrayList<>();
-        for (int i = 1; i<line.length; i++){
-            studentsAtDate.add(line[i]);
-        }
-        return studentsAtDate;
+        return new ArrayList<>(Arrays.asList(line).subList(1, line.length));
     }
 
     private Scanner loadFile(){
