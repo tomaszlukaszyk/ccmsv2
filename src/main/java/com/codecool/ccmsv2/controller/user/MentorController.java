@@ -50,6 +50,7 @@ public class MentorController extends UserController {
         List<Assignment> studentsAssig = xmlStudentsDAO.readStudentAssignments(student.getEmail());
         Assignment assignment = chooseAssignment(studentsAssig);
         if (!(assignment == null)) {
+            getView().print(assignment.getSubmissionLink());
             assignment.setGrade(getView().getInputString("Grade?"));
             xmlStudentsDAO.updateAssignment(student, assignment);
         }
