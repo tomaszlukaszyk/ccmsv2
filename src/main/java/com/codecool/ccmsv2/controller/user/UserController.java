@@ -78,7 +78,7 @@ public abstract class UserController {
     }
 
     int chooseUser(List<? extends User> users) {
-        view.print("\n Choose a " + users.get(0).getClass().getName());
+        view.print("\n Choose a " + users.get(0).getClass().getSimpleName());
         showUsers(users);
         return getView().getInputInt(1, users.size()) - 1;
     }
